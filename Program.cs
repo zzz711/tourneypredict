@@ -15,11 +15,13 @@ namespace statcompare
             {
                 using(var query = new NpgsqlCommand())
                 {
+                    var str = "Select * From public.stats Where team_id = '" + team +"'";
                     query.Connection = conn;
-                    query.CommandText = "Select * From public.stats Where team_id = '@team'";
+                    query.CommandText = str;
                     var param = query.CreateParameter();
                     param.ParameterName = "team";
                     param.Value = team;
+                    query.Parameters.Add(param);
                     
                     conn.Open();
                     var reader = query.ExecuteReader();
@@ -40,7 +42,6 @@ namespace statcompare
         
         static int Main(string[] args)
         {
-            Console.WriteLine(args.Length);
             if (args.Length == 0 || args.Length > 1)
             {
                 Console.WriteLine("Error: invalid number of arguments");
