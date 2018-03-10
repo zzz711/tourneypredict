@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Npgsql;
 
 namespace statcompare
@@ -11,7 +12,7 @@ namespace statcompare
             teamStats.TeamName = team;
             
             using (var conn =
-                new NpgsqlConnection("Server=192.168.0.5; User Id =postgres; Password=password; Database =basketball"))
+                new NpgsqlConnection("Server=192.168.0.5; User Id =postgres; Password=; Database =basketball"))
             {
                 using(var query = new NpgsqlCommand())
                 {
@@ -65,7 +66,10 @@ namespace statcompare
         private void RecordResult(string name, double score)
         {
             string result = String.Format("{0} {1}", name, score);
-            System.IO.File.WriteAllText("Results.txt", result);
+            using (System.IO.StreamWriter file = new StreamWriter("Results.txt", true))
+            {
+                file.WriteLine(result);
+            }
         }
         
         private void PredictWinner(Team teamOne, Team teamTwo)
@@ -193,6 +197,7 @@ namespace statcompare
             }
             
             var teams = System.IO.File.ReadAllLines(args[0]);
+            Console.WriteLine(teams.Length);
 
             var program = new Program();
             for (var i = 0; i < teams.Length; i += 2)

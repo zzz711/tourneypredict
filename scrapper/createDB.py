@@ -15,11 +15,11 @@ def create_table(conn):
     cursor.close()
 
 if __name__ == '__main__':
-    conn = psycopg2.connect(host="192.168.0.5", port=5432, database="postgres", user="postgres", password="password")
+    conn = psycopg2.connect(host="192.168.0.5", port=5432, database="postgres", user="postgres", password="")
     conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
    # create_db(conn)
     print("Database created")
-    conn = psycopg2.connect(host="192.168.0.5", port=5432, database="basketball", user="postgres", password="password")
+    conn = psycopg2.connect(host="192.168.0.5", port=5432, database="basketball", user="postgres", password="")
     conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     create_table(conn)
     print("Table created")

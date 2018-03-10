@@ -19,8 +19,7 @@ def scrape(id):
 
     request=urllib.request.Request(url, None, headers)
     response = urllib.request.urlopen(request)
-    data = response.read() # The data u need
-
+    data = response.read() 
 
     soup = BeautifulSoup(data, "html.parser")
 
@@ -41,22 +40,15 @@ def scrape(id):
         for cell in row.find_all('td'):
             txt = cell.text
             txt = txt.strip()
-            print(txt)
+
             cells.append(txt)
         rows.append(cells)
-
-    # for rauw in rows[1:]:
-    #     if len(rauw) is 3:
-    #         temp = rauw[2]
-    #         rauw[2] = temp[7:]
-    #         rauw[2] = rauw[2]
-    #         print(rauw[2])
 
     return team_name, rows
 
 
 def set_team_key(team_name):
-    conn = psycopg2.connect(host="192.168.0.5", port=5432, database="basketball", user="postgres", password="password")
+    conn = psycopg2.connect(host="192.168.0.5", port=5432, database="basketball", user="postgres", password="")
     cursor = conn.cursor()
     query = r"Insert Into teams(name) VALUES ('{0}') RETURNING id;".format(team_name)
     cursor.execute(query)
@@ -65,15 +57,11 @@ def set_team_key(team_name):
 
 
 def write_to_db(rows):
-    conn = psycopg2.connect(host="192.168.0.5", port=5432, database="basketball", user="postgres", password="password")
+    conn = psycopg2.connect(host="192.168.0.5", port=5432, database="basketball", user="postgres", password="")
     cursor = conn.cursor()
 
     query = "Insert Into stats(scoring_offense, scoring_defense, scoring_margin, rebound_margin, assists, blocks, steals, turnover_margin, assist_turnover_ratio, fg_percentage, fg_percentage_defense, three_pointers, three_pointers_percent, ft_percent, wl_percent, team_id) VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}', '{15}');".format(rows[1][2][2], rows[1][3][2], rows[1][4][2], rows[1][5][2], rows[1][6][2], rows[1][7][2], rows[1][8][2], rows[1][9][2], rows[1][10][2], rows[1][11][2], rows[1][12][2], rows[1][13][2], rows[1][14][2], rows[1][15][2], rows[1][16][2], str(rows[0]))
-    print(query)
     cursor.execute(query)
-    #query = "Insert Into stats(assist_turnover_ratio, fg_percentage, fg_percentage_defense, three_pointers, three_pointers_percent, ft_percent, wl_percent, team_id) VALUES('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}');".format(rows[1][10][2], rows[1][11][2], rows[1][12][2], rows[1][13][2], rows[1][14][2], rows[1][15][2], rows[1][15][2], str(rows[0]))
-    #print(query)
-    #cursor.execute(query)
     conn.commit()
     print(rows[0])
 
