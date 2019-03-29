@@ -30,6 +30,8 @@ def scrape(id):
 
     print(type(lst[5]))
     team_name = lst[5]
+    if "'" in team_name:
+       team_name=team_name.replace("'","")
     team_id = set_team_key(team_name)
     tbls = soup.find_all('table', attrs={'class': 'mytable'}, limit=2)
 
