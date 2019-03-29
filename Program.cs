@@ -66,6 +66,7 @@ namespace statcompare
         private void RecordResult(string name, double score)
         {
             string result = String.Format("{0} {1}", name, score);
+		Console.WriteLine(result);
             using (System.IO.StreamWriter file = new StreamWriter("Results.txt", true))
             {
                 file.WriteLine(result);
@@ -190,13 +191,18 @@ namespace statcompare
         
         static int Main(string[] args)
         {
+		string file;
             if (args.Length == 0 || args.Length > 1)
             {
                 Console.WriteLine("Error: invalid number of arguments");
-                return 1;
+			 file = "teams.txt";               
+			//return 1;
             }
+		else{
+			file = args[0];
+		}
             
-            var teams = System.IO.File.ReadAllLines(args[0]);
+            var teams = System.IO.File.ReadAllLines(file);
             Console.WriteLine(teams.Length);
 
             var program = new Program();
