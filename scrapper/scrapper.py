@@ -28,16 +28,15 @@ def scrape(id):
     for txt in soup.find_all('a'):
         lst.append(txt.get_text())
 
-    print(type(lst[5]))
-    team_name = lst[5]
+    team_name = lst[7]
     if "'" in team_name:
        team_name=team_name.replace("'","")
-    team_id = set_team_key(team_name)
+#    team_id = set_team_key(team_name)
     tbls = soup.find_all('table', attrs={'class': 'mytable'}, limit=2)
 
     rows =[]
 
-    for row in tbls[1].find_all('tr'):
+    for row in tbls[0].find_all('tr'):
         cells = []
         for cell in row.find_all('td'):
             txt = cell.text
